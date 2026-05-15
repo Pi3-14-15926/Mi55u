@@ -14,7 +14,7 @@ export default function AdminSettings() {
   const [form, setForm] = useState<Config>({
     maleName: '', femaleName: '', meetDate: '', loveDate: '',
     avatarUrlMale: '', avatarUrlFemale: '',
-    siteTitle: '', siteName: '', siteDescription: '', footerText: '',
+    siteTitle: '', siteDescription: '', footerText: '',
     showMeetCount: true, showLoveCount: true, homepageBg: '', siteIcon: '', copyrightText: '',
   })
 
@@ -50,11 +50,6 @@ export default function AdminSettings() {
           <div>
             <label className="text-xs mb-1 block" style={{ color: '#959595' }}>网站标题</label>
             <input type="text" value={form.siteTitle || ''} onChange={(e) => setForm({ ...form, siteTitle: e.target.value })} placeholder="LoveSpace" className="input-field" />
-          </div>
-
-          <div>
-            <label className="text-xs mb-1 block" style={{ color: '#959595' }}>网站名称</label>
-            <input type="text" value={form.siteName || ''} onChange={(e) => setForm({ ...form, siteName: e.target.value })} placeholder="LoveSpace" className="input-field" />
           </div>
 
           <div>
