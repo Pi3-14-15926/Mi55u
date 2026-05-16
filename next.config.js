@@ -9,6 +9,7 @@ const nextConfig = {
 // GitHub Pages 静态导出模式 (EXPORT=true npm run build)
 if (process.env.EXPORT === 'true') {
   nextConfig.output = 'export'
+  nextConfig.basePath = '/Mi55u'
 }
 
 module.exports = nextConfig
