@@ -10,7 +10,7 @@ import type { Config } from '@/lib/data'
 
 export default function AdminSecurity() {
   const router = useRouter()
-  const [cdnUrl, setCdnUrl] = useState('https://cdn.jsdelivr.net/gh/')
+  const [cdnUrl, setCdnUrl] = useState('https://cdn.jsdelivr.net/gh/Pi3-14-15926/Mi55u@main/')
   const [cdnEnabled, setCdnEnabled] = useState(true)
 
   useEffect(() => {
