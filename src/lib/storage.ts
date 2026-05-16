@@ -1,5 +1,8 @@
 import { isGitHubMode, readFile, writeFile, uploadFileAsBase64, deleteFile_, getRawUrl } from './github'
 import { asset } from './paths'
+import { GITHUB_REPO } from './repo'
+
+const _cb = () => '?t=' + Date.now()
 
 const PREFIX = 'love_'
 const API_BASE = '/api/data/'
@@ -23,7 +26,7 @@ async function serverAvailable(): Promise<boolean> {
 export async function loadData<T>(filename: string): Promise<T | null> {
   // 1. Try local API (dev/production server mode)
   try {
-    const res = await fetch(API_BASE + filename, { signal: AbortSignal.timeout(2000) })
+    const res = await fetch(API_BASE + filename + _cb(), { signal: AbortSignal.timeout(2000) })
     if (res.ok) {
       const data = await res.json()
       try { if (data !== null) localStorage.setItem(PREFIX + filename, JSON.stringify(data)) } catch {}
@@ -43,7 +46,21 @@ export async function loadData<T>(filename: string): Promise<T | null> {
     } catch {}
   }
 
-  // 3. Fallback: localStorage
+  // 3. Public GitHub raw URL（无需 token，对所有访客生效）
+  if (GITHUB_REPO) {
+    try {
+      const [owner, repoName] = GITHUB_REPO.split('/')
+      const url = `https://raw.githubusercontent.com/${owner}/${repoName}/main/server-data/${filename}${_cb()}`
+      const res = await fetch(url, { signal: AbortSignal.timeout(5000) })
+      if (res.ok) {
+        const data = await res.json() as T
+        try { localStorage.setItem(PREFIX + filename, JSON.stringify(data)) } catch {}
+        return data
+      }
+    } catch {}
+  }
+
+  // 4. Fallback: localStorage
   const cached = localStorage.getItem(PREFIX + filename)
   if (cached) {
     try {
@@ -53,11 +70,11 @@ export async function loadData<T>(filename: string): Promise<T | null> {
     }
   }
 
-  // 4. Fallback: static JSON files
+  // 5. Fallback: static JSON files
   const staticPath = STATIC_MAP[filename]
   if (staticPath) {
     try {
-      const res = await fetch(asset(staticPath))
+      const res = await fetch(asset(staticPath) + _cb())
       if (!res.ok) return null
       const data = await res.json() as T
       try { localStorage.setItem(PREFIX + filename, JSON.stringify(data)) } catch {}

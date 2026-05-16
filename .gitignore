@@ -16,3 +16,4 @@ out
 .idea
 nul
 site-config.json
+src/lib/repo.ts

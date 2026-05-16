@@ -1,4 +1,7 @@
 import { asset } from './paths'
+import { GITHUB_REPO } from './repo'
+
+const _cb = () => '?t=' + Date.now()
 
 export interface Config {
   maleName: string
@@ -77,7 +80,7 @@ export async function fetchData<T>(path: string): Promise<T | null> {
 
   // Try server API first
   try {
-    const res = await fetch('/api/data/' + filename, { signal: AbortSignal.timeout(2000) })
+    const res = await fetch('/api/data/' + filename + _cb(), { signal: AbortSignal.timeout(2000) })
     if (res.ok) {
       const data = await res.json()
       try { if (data !== null) localStorage.setItem('love_' + filename, JSON.stringify(data)) } catch {}
@@ -95,9 +98,23 @@ export async function fetchData<T>(path: string): Promise<T | null> {
     }
   }
 
+  // Fallback: public GitHub raw URL
+  if (GITHUB_REPO) {
+    try {
+      const [owner, repoName] = GITHUB_REPO.split('/')
+      const url = `https://raw.githubusercontent.com/${owner}/${repoName}/main/server-data/${filename}${_cb()}`
+      const res = await fetch(url, { signal: AbortSignal.timeout(5000) })
+      if (res.ok) {
+        const data = await res.json() as T
+        try { localStorage.setItem('love_' + filename, JSON.stringify(data)) } catch {}
+        return data
+      }
+    } catch {}
+  }
+
   // Fallback: static file
   try {
-    const res = await fetch(asset(path))
+    const res = await fetch(asset(path) + _cb())
     if (!res.ok) return null
     const data = await res.json() as T
     try { localStorage.setItem('love_' + filename, JSON.stringify(data)) } catch {}
