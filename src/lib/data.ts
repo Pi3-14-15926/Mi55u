@@ -1,3 +1,5 @@
+import { asset } from './paths'
+
 export interface Config {
   maleName: string
   femaleName: string
@@ -95,7 +97,7 @@ export async function fetchData<T>(path: string): Promise<T | null> {
 
   // Fallback: static file
   try {
-    const res = await fetch(path)
+    const res = await fetch(asset(path))
     if (!res.ok) return null
     const data = await res.json() as T
     try { localStorage.setItem('love_' + filename, JSON.stringify(data)) } catch {}

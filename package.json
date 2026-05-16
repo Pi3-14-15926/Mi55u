@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "build:ghpages": "set EXPORT=true&&next build",
+    "presync": "node scripts/sync-data.js",
+    "build": "node scripts/sync-data.js && next build",
+    "build:ghpages": "node scripts/sync-data.js && set EXPORT=true&&next build",
     "start": "next start",
     "start:server": "node server.js",
     "lint": "next lint",
