@@ -6,8 +6,7 @@ import AdminLayout from '@/components/admin/AdminLayout'
 import ConfirmModal from '@/components/admin/ConfirmModal'
 import { isLoggedIn } from '@/lib/auth'
 import { loadData, saveData, deleteUploadedFile } from '@/lib/storage'
-import { fetchData } from '@/lib/data'
-import type { Config, Photo } from '@/lib/data'
+import type { Photo } from '@/lib/data'
 import { toCdnUrl, preloadImages } from '@/lib/cdn'
 
 function groupByDate(photos: Photo[]): Record<string, Record<string, Record<string, Photo[]>>> {
@@ -34,11 +33,8 @@ export default function AdminFiles() {
 
   useEffect(() => {
     if (!isLoggedIn()) { router.replace('/admin'); return }
-    Promise.all([
-      fetchData<Config>('/data/config.json'),
-      loadData<Photo[]>('photos.json'),
-    ]).then(([, photos]) => {
-      const list = photos || []
+    loadData<Photo[]>('photos.json').then((data) => {
+      const list = data || []
       setPhotos(list)
       preloadImages(list.map((p) => p.url))
     })

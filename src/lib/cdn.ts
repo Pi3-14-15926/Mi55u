@@ -1,21 +1,32 @@
-export function toCdnUrl(url: string): string {
-  if (!url || !url.startsWith('https://raw.githubusercontent.com/')) return url
+const CDN_CONFIG_KEY = 'love_cdn_config'
+
+export function getCdnConfig(): { url?: string; enabled?: boolean } {
   try {
-    const cached = localStorage.getItem('love_config.json')
-    if (cached) {
-      const config = JSON.parse(cached)
-      if (config.cdnEnabled !== false && config.cdnUrl) {
-        const prefix = config.cdnUrl.replace(/\/?$/, '/')
-        return url.replace('https://raw.githubusercontent.com/', prefix)
-      }
-    }
+    const cached = localStorage.getItem(CDN_CONFIG_KEY)
+    if (cached) return JSON.parse(cached)
   } catch {}
-  return url
+  return {}
+}
+
+export function saveCdnConfig(url: string, enabled: boolean) {
+  try {
+    localStorage.setItem(CDN_CONFIG_KEY, JSON.stringify({ url, enabled }))
+  } catch {}
+}
+
+export function toCdnUrl(rawUrl: string): string {
+  if (!rawUrl || !rawUrl.startsWith('https://raw.githubusercontent.com/')) return rawUrl
+  const { url, enabled } = getCdnConfig()
+  if (enabled !== false && url) {
+    const prefix = url.replace(/\/?$/, '/')
+    return rawUrl.replace('https://raw.githubusercontent.com/', prefix)
+  }
+  return rawUrl
 }
 
 export function preloadImages(urls: string[]) {
-  for (const url of urls) {
-    const cdnUrl = toCdnUrl(url)
+  for (const rawUrl of urls) {
+    const cdnUrl = toCdnUrl(rawUrl)
     if (cdnUrl) {
       const link = document.createElement('link')
       link.rel = 'preload'

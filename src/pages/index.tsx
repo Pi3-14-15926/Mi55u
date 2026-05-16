@@ -15,11 +15,9 @@ export default function HomePage() {
   const [loveDays, setLoveDays] = useState(0)
 
   useEffect(() => {
-    Promise.all([
-      fetchData<Config>('/data/config.json').then(setConfig),
-      fetchData<Photo[]>('/data/photos.json'),
-    ]).then(([, photos]) => {
-      const list = photos || []
+    fetchData<Config>('/data/config.json').then(setConfig)
+    fetchData<Photo[]>('/data/photos.json').then((data) => {
+      const list = data || []
       setPhotos(list)
       preloadImages(list.map((p) => p.url))
     })

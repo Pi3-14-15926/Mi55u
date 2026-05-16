@@ -4,9 +4,7 @@ import Link from 'next/link'
 import toast from 'react-hot-toast'
 import AdminLayout from '@/components/admin/AdminLayout'
 import { isLoggedIn, changePassword } from '@/lib/auth'
-import { fetchData } from '@/lib/data'
-import { saveData } from '@/lib/storage'
-import type { Config } from '@/lib/data'
+import { getCdnConfig, saveCdnConfig } from '@/lib/cdn'
 
 export default function AdminSecurity() {
   const router = useRouter()
@@ -18,19 +16,15 @@ export default function AdminSecurity() {
     loadCdnConfig()
   }, [router])
 
-  const loadCdnConfig = async () => {
-    const config = await fetchData<Config>('/data/config.json')
-    if (config) {
-      if (config.cdnUrl) setCdnUrl(config.cdnUrl)
-      if (config.cdnEnabled !== undefined) setCdnEnabled(config.cdnEnabled)
-    }
+  const loadCdnConfig = () => {
+    const cfg = getCdnConfig()
+    if (cfg.url) setCdnUrl(cfg.url)
+    if (cfg.enabled !== undefined) setCdnEnabled(cfg.enabled)
   }
 
-  const saveCdnConfig = () => {
-    fetchData<Config>('/data/config.json').then((config: Config | null) => {
-      saveData('config.json', { ...(config || {}), cdnUrl: cdnUrl.trim() || undefined, cdnEnabled })
-      toast.success('CDN 配置已保存')
-    })
+  const handleSaveCdn = () => {
+    saveCdnConfig(cdnUrl.trim() || '', cdnEnabled)
+    toast.success('CDN 配置已保存')
   }
 
   return (
@@ -100,9 +94,9 @@ export default function AdminSecurity() {
             </div>
           )}
           <div className="flex gap-2">
-            <button onClick={saveCdnConfig} className="btn text-sm">保存 CDN 配置</button>
+            <button onClick={handleSaveCdn} className="btn text-sm">保存 CDN 配置</button>
             {cdnUrl && (
-              <button onClick={() => { setCdnUrl(''); saveCdnConfig() }} className="btn-outline text-sm">清除 CDN</button>
+              <button onClick={() => { setCdnUrl(''); saveCdnConfig('', cdnEnabled) }} className="btn-outline text-sm">清除 CDN</button>
             )}
           </div>
         </div>
