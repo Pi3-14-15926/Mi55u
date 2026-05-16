@@ -20,6 +20,7 @@ export interface Config {
   siteIcon?: string
   copyrightText?: string
   cdnUrl?: string
+  cdnEnabled?: boolean
 }
 
 export interface Photo {

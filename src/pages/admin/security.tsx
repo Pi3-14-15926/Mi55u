@@ -11,6 +11,7 @@ import type { Config } from '@/lib/data'
 export default function AdminSecurity() {
   const router = useRouter()
   const [cdnUrl, setCdnUrl] = useState('https://cdn.jsdelivr.net/gh/')
+  const [cdnEnabled, setCdnEnabled] = useState(true)
 
   useEffect(() => {
     if (!isLoggedIn()) { router.replace('/admin'); return }
@@ -19,12 +20,15 @@ export default function AdminSecurity() {
 
   const loadCdnConfig = async () => {
     const config = await fetchData<Config>('/data/config.json')
-    if (config?.cdnUrl) setCdnUrl(config.cdnUrl)
+    if (config) {
+      if (config.cdnUrl) setCdnUrl(config.cdnUrl)
+      if (config.cdnEnabled !== undefined) setCdnEnabled(config.cdnEnabled)
+    }
   }
 
   const saveCdnConfig = () => {
     fetchData<Config>('/data/config.json').then((config: Config | null) => {
-      saveData('config.json', { ...(config || {}), cdnUrl: cdnUrl.trim() || undefined })
+      saveData('config.json', { ...(config || {}), cdnUrl: cdnUrl.trim() || undefined, cdnEnabled })
       toast.success('CDN 配置已保存')
     })
   }
@@ -66,7 +70,7 @@ export default function AdminSecurity() {
           </p>
           <div>
             <label className="text-xs mb-1 block" style={{ color: '#959595' }}>CDN 地址</label>
-            <div className="flex gap-2">
+            <div className="flex gap-2 items-center">
               <input
                 type="url"
                 value={cdnUrl}
@@ -74,6 +78,17 @@ export default function AdminSecurity() {
                 placeholder="https://cdn.jsdelivr.net/gh/"
                 className="input-field flex-1"
               />
+              <button
+                onClick={() => setCdnEnabled(!cdnEnabled)}
+                className="w-10 h-6 rounded-full relative transition-colors flex-shrink-0"
+                style={{ background: cdnEnabled ? '#2098ff' : '#d0cece' }}
+              >
+                <div
+                  className="w-4 h-4 bg-white rounded-full absolute top-1 transition-transform shadow-sm"
+                  style={{ transform: cdnEnabled ? 'translateX(5px)' : 'translateX(1px)' }}
+                />
+              </button>
+              <span className="text-xs whitespace-nowrap" style={{ color: '#959595' }}>{cdnEnabled ? '已开启' : '已关闭'}</span>
             </div>
           </div>
           {cdnUrl && (

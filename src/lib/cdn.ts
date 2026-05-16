@@ -4,7 +4,7 @@ export function toCdnUrl(url: string): string {
     const cached = localStorage.getItem('love_config.json')
     if (cached) {
       const config = JSON.parse(cached)
-      if (config.cdnUrl) {
+      if (config.cdnEnabled !== false && config.cdnUrl) {
         const prefix = config.cdnUrl.replace(/\/?$/, '/')
         return url.replace('https://raw.githubusercontent.com/', prefix)
       }
