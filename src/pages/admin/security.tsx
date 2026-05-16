@@ -1,16 +1,33 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import toast from 'react-hot-toast'
 import AdminLayout from '@/components/admin/AdminLayout'
 import { isLoggedIn, changePassword } from '@/lib/auth'
+import { fetchData } from '@/lib/data'
+import { saveData } from '@/lib/storage'
+import type { Config } from '@/lib/data'
 
 export default function AdminSecurity() {
   const router = useRouter()
+  const [cdnUrl, setCdnUrl] = useState('')
 
   useEffect(() => {
     if (!isLoggedIn()) { router.replace('/admin'); return }
+    loadCdnConfig()
   }, [router])
+
+  const loadCdnConfig = async () => {
+    const config = await fetchData<Config>('config.json')
+    if (config?.cdnUrl) setCdnUrl(config.cdnUrl)
+  }
+
+  const saveCdnConfig = () => {
+    fetchData<Config>('/data/config.json').then((config: Config | null) => {
+      saveData('config.json', { ...(config || {}), cdnUrl: cdnUrl.trim() || undefined })
+      toast.success('CDN 配置已保存')
+    })
+  }
 
   return (
     <AdminLayout>
@@ -39,6 +56,40 @@ export default function AdminSecurity() {
               toast.error('当前密码错误')
             }
           }} className="btn text-sm">修改密码</button>
+        </div>
+
+        <div className="card mt-6 space-y-4">
+          <h2 className="text-lg font-bold" style={{ fontFamily: "'Noto Serif SC', serif", color: '#333' }}>🚀 图片 CDN 加速</h2>
+          <p className="text-xs" style={{ color: '#959595' }}>
+            配置 CDN 地址替换 <code className="px-1 rounded" style={{ background: '#f5f5f5', color: '#d63384' }}>raw.githubusercontent.com</code>，加速中国大陆图片加载。
+            支持 jsDelivr、Cloudflare Workers 等自定义 CDN 代理。
+          </p>
+          <div>
+            <label className="text-xs mb-1 block" style={{ color: '#959595' }}>CDN 地址</label>
+            <div className="flex gap-2">
+              <input
+                type="url"
+                value={cdnUrl}
+                onChange={(e) => setCdnUrl(e.target.value)}
+                placeholder="https://cdn.jsdelivr.net/gh/"
+                className="input-field flex-1"
+              />
+            </div>
+          </div>
+          {cdnUrl && (
+            <div className="flex gap-2 items-center text-xs" style={{ color: '#959595' }}>
+              <span>示例效果：</span>
+              <code className="px-1 rounded truncate max-w-[300px]" style={{ background: '#f5f5f5' }}>
+                {cdnUrl.replace(/\/?$/, '/')}user/repo/main/photo.jpg
+              </code>
+            </div>
+          )}
+          <div className="flex gap-2">
+            <button onClick={saveCdnConfig} className="btn text-sm">保存 CDN 配置</button>
+            {cdnUrl && (
+              <button onClick={() => { setCdnUrl(''); saveCdnConfig() }} className="btn-outline text-sm">清除 CDN</button>
+            )}
+          </div>
         </div>
 
         <div className="mt-6">

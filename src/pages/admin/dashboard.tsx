@@ -8,6 +8,7 @@ import { isLoggedIn, logout } from '@/lib/auth'
 import { fetchData } from '@/lib/data'
 import { defaultConfig } from '@/lib/defaultConfig'
 import { asset } from '@/lib/paths'
+import { toCdnUrl } from '@/lib/cdn'
 import type { Config, Photo, DiaryEntry, TodoItem } from '@/lib/data'
 
 export default function AdminDashboard() {
@@ -65,7 +66,7 @@ export default function AdminDashboard() {
         <div className="card">
           <div className="flex items-center gap-4 mb-3">
             {cfg.avatarUrlMale ? (
-              <img src={cfg.avatarUrlMale} alt="" className="w-12 h-12 rounded-full object-cover" style={{ border: '2px solid rgba(208,206,206,0.4)' }} />
+              <img src={toCdnUrl(cfg.avatarUrlMale)} alt="" className="w-12 h-12 rounded-full object-cover" style={{ border: '2px solid rgba(208,206,206,0.4)' }} />
             ) : (
               <div className="w-12 h-12 rounded-full bg-love-100 flex items-center justify-center text-xl">👨</div>
             )}
@@ -74,7 +75,7 @@ export default function AdminDashboard() {
               <p className="text-xs" style={{ color: '#959595' }}>认识 {cfg.meetDate} · 相恋 {cfg.loveDate}</p>
             </div>
             {cfg.avatarUrlFemale ? (
-              <img src={cfg.avatarUrlFemale} alt="" className="w-12 h-12 rounded-full object-cover" style={{ border: '2px solid rgba(208,206,206,0.4)' }} />
+              <img src={toCdnUrl(cfg.avatarUrlFemale)} alt="" className="w-12 h-12 rounded-full object-cover" style={{ border: '2px solid rgba(208,206,206,0.4)' }} />
             ) : (
               <div className="w-12 h-12 rounded-full bg-love-100 flex items-center justify-center text-xl">👩</div>
             )}

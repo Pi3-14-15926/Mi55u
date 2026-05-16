@@ -19,6 +19,7 @@ export interface Config {
   homepageBg?: string
   siteIcon?: string
   copyrightText?: string
+  cdnUrl?: string
 }
 
 export interface Photo {

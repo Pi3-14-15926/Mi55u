@@ -7,6 +7,7 @@ import { isLoggedIn } from '@/lib/auth'
 import { saveData } from '@/lib/storage'
 import { fetchData } from '@/lib/data'
 import { defaultConfig } from '@/lib/defaultConfig'
+import { toCdnUrl } from '@/lib/cdn'
 import type { Config } from '@/lib/data'
 
 function Toggle({ checked, onChange }: { checked: boolean; onChange: (v: boolean) => void }) {
@@ -98,14 +99,14 @@ export default function AdminInfo() {
               <label className="text-xs mb-1 block" style={{ color: '#959595' }}>男方头像</label>
               <div className="flex gap-2 items-center">
                 <input type="url" value={form.avatarUrlMale || ''} onChange={(e) => setForm({ ...form, avatarUrlMale: e.target.value })} placeholder="头像 URL" className="input-field flex-1" />
-                {form.avatarUrlMale && <img src={form.avatarUrlMale} alt="" className="w-10 h-10 rounded-full object-cover flex-shrink-0" style={{ border: '2px solid rgba(208,206,206,0.4)' }} />}
+                {form.avatarUrlMale && <img src={toCdnUrl(form.avatarUrlMale)} alt="" className="w-10 h-10 rounded-full object-cover flex-shrink-0" style={{ border: '2px solid rgba(208,206,206,0.4)' }} />}
               </div>
             </div>
             <div>
               <label className="text-xs mb-1 block" style={{ color: '#959595' }}>女方头像</label>
               <div className="flex gap-2 items-center">
                 <input type="url" value={form.avatarUrlFemale || ''} onChange={(e) => setForm({ ...form, avatarUrlFemale: e.target.value })} placeholder="头像 URL" className="input-field flex-1" />
-                {form.avatarUrlFemale && <img src={form.avatarUrlFemale} alt="" className="w-10 h-10 rounded-full object-cover flex-shrink-0" style={{ border: '2px solid rgba(208,206,206,0.4)' }} />}
+                {form.avatarUrlFemale && <img src={toCdnUrl(form.avatarUrlFemale)} alt="" className="w-10 h-10 rounded-full object-cover flex-shrink-0" style={{ border: '2px solid rgba(208,206,206,0.4)' }} />}
               </div>
             </div>
           </div>

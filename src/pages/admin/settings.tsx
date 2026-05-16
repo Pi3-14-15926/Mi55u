@@ -4,6 +4,7 @@ import Link from 'next/link'
 import toast from 'react-hot-toast'
 import AdminLayout from '@/components/admin/AdminLayout'
 import { isLoggedIn } from '@/lib/auth'
+import { toCdnUrl } from '@/lib/cdn'
 import { saveData } from '@/lib/storage'
 import { fetchData } from '@/lib/data'
 import { defaultConfig } from '@/lib/defaultConfig'
@@ -76,7 +77,7 @@ export default function AdminSettings() {
             <label className="text-xs mb-1 block" style={{ color: '#959595' }}>网站图标</label>
             <div className="flex gap-2 items-center">
               <input type="url" value={form.siteIcon || ''} onChange={(e) => setForm({ ...form, siteIcon: e.target.value })} placeholder="https://example.com/favicon.ico" className="input-field flex-1" />
-              {form.siteIcon && <img src={form.siteIcon} alt="" className="w-8 h-8 rounded flex-shrink-0" />}
+              {form.siteIcon && <img src={toCdnUrl(form.siteIcon)} alt="" className="w-8 h-8 rounded flex-shrink-0" />}
             </div>
             <p className="text-xs mt-1" style={{ color: '#959595' }}>浏览器标签页图标，支持 .ico / .png / .svg URL</p>
           </div>

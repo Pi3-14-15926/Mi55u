@@ -7,6 +7,7 @@ import ConfirmModal from '@/components/admin/ConfirmModal'
 import { isLoggedIn } from '@/lib/auth'
 import { loadData, saveData, deleteUploadedFile } from '@/lib/storage'
 import type { Photo } from '@/lib/data'
+import { toCdnUrl } from '@/lib/cdn'
 
 function groupByDate(photos: Photo[]): Record<string, Record<string, Record<string, Photo[]>>> {
   const groups: Record<string, Record<string, Record<string, Photo[]>>> = {}
@@ -175,9 +176,9 @@ export default function AdminFiles() {
                                 <>
                                   <div className="aspect-square rounded-lg overflow-hidden mb-2 bg-love-50">
                                     {photo.type === 'image' ? (
-                                      <img src={photo.url} alt={photo.text} className="w-full h-full object-cover" />
+                                      <img src={toCdnUrl(photo.url)} alt={photo.text} className="w-full h-full object-cover" />
                                     ) : (
-                                      <video src={photo.url} className="w-full h-full object-cover" muted />
+                                      <video src={toCdnUrl(photo.url)} className="w-full h-full object-cover" muted />
                                     )}
                                   </div>
                                   <p className="text-xs text-center truncate mb-2" style={{ color: '#777', fontFamily: "'Noto Serif SC', serif" }}>{photo.text || '无描述'}</p>

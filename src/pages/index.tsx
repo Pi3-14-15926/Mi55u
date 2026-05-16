@@ -6,6 +6,7 @@ import WaveDivider from '@/components/WaveDivider'
 import { Config, Photo, getTimeSince, fetchData, formatDate } from '@/lib/data'
 import { defaultConfig } from '@/lib/defaultConfig'
 import { asset } from '@/lib/paths'
+import { toCdnUrl } from '@/lib/cdn'
 
 export default function HomePage() {
   const [config, setConfig] = useState<Config | null>(null)
@@ -54,7 +55,7 @@ export default function HomePage() {
             <div className="flex flex-col items-center gap-2">
               <div className="w-20 h-20 md:w-28 md:h-28 rounded-full bg-white shadow-card flex items-center justify-center overflow-hidden" style={{ border: '3px solid rgba(208,206,206,0.3)' }}>
                 {cfg.avatarUrlMale ? (
-                  <img src={cfg.avatarUrlMale} alt={cfg.maleName} className="w-full h-full object-cover" />
+                  <img src={toCdnUrl(cfg.avatarUrlMale)} alt={cfg.maleName} className="w-full h-full object-cover" />
                 ) : (
                   <span className="text-3xl md:text-5xl">👨</span>
                 )}
@@ -73,7 +74,7 @@ export default function HomePage() {
             <div className="flex flex-col items-center gap-2">
               <div className="w-20 h-20 md:w-28 md:h-28 rounded-full bg-white shadow-card flex items-center justify-center overflow-hidden" style={{ border: '3px solid rgba(208,206,206,0.3)' }}>
                 {cfg.avatarUrlFemale ? (
-                  <img src={cfg.avatarUrlFemale} alt={cfg.femaleName} className="w-full h-full object-cover" />
+                  <img src={toCdnUrl(cfg.avatarUrlFemale)} alt={cfg.femaleName} className="w-full h-full object-cover" />
                 ) : (
                   <span className="text-3xl md:text-5xl">👩</span>
                 )}
@@ -143,7 +144,7 @@ export default function HomePage() {
                 >
                   <div className="aspect-square rounded-md overflow-hidden">
                     <img
-                      src={photo.url}
+                      src={toCdnUrl(photo.url)}
                       alt={photo.text}
                       className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
                     />

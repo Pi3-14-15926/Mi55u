@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { asset } from '@/lib/paths'
 import MainLayout from '@/layouts/MainLayout'
 import { Photo, fetchData, formatDate } from '@/lib/data'
+import { toCdnUrl } from '@/lib/cdn'
 
 export default function AlbumPage() {
   const [photos, setPhotos] = useState<Photo[]>([])
@@ -67,10 +68,10 @@ export default function AlbumPage() {
                   >
                     <div className="aspect-square rounded-xl overflow-hidden">
                       {photo.type === 'image' ? (
-                        <img src={photo.url} alt={photo.text} className="w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
+                        <img src={toCdnUrl(photo.url)} alt={photo.text} className="w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
                       ) : (
                         <div className="w-full h-full bg-love-100 flex items-center justify-center relative">
-                          <video src={photo.url} className="w-full h-full object-cover" muted />
+                          <video src={toCdnUrl(photo.url)} className="w-full h-full object-cover" muted />
                           <div className="absolute inset-0 flex items-center justify-center">
                             <div className="w-12 h-12 rounded-full bg-white/80 flex items-center justify-center">
                               <span className="text-love-500 text-xl ml-0.5">▶</span>
@@ -106,9 +107,9 @@ export default function AlbumPage() {
             >
               <div className="card p-2">
                 {selected.type === 'image' ? (
-                  <img src={selected.url} alt={selected.text} className="w-full rounded-xl" />
+                  <img src={toCdnUrl(selected.url)} alt={selected.text} className="w-full rounded-xl" />
                 ) : (
-                  <video src={selected.url} className="w-full rounded-xl" controls autoPlay />
+                  <video src={toCdnUrl(selected.url)} className="w-full rounded-xl" controls autoPlay />
                 )}
                 <div className="p-4">
                   <p className="font-bold" style={{ color: '#333', fontFamily: "'Noto Serif SC', serif" }}>{selected.text}</p>
