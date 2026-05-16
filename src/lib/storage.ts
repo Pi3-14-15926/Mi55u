@@ -1,6 +1,7 @@
 import { isGitHubMode, readFile, writeFile, uploadFileAsBase64, deleteFile_, getRawUrl } from './github'
 import { asset } from './paths'
 import { GITHUB_REPO } from './repo'
+import { convertToWebP } from './image'
 
 const _cb = () => '?t=' + Date.now()
 
@@ -108,15 +109,16 @@ export async function saveData<T>(filename: string, data: T): Promise<void> {
 }
 
 export async function uploadFile(file: File): Promise<string> {
+  const webp = await convertToWebP(file)
   const dataUrl = await new Promise<string>((resolve, reject) => {
     const reader = new FileReader()
     reader.onload = () => resolve(reader.result as string)
     reader.onerror = () => reject(reader.error)
-    reader.readAsDataURL(file)
+    reader.readAsDataURL(webp)
   })
 
   if (isGitHubMode()) {
-    return uploadFileAsBase64(file.name, dataUrl)
+    return uploadFileAsBase64(webp.name, dataUrl)
   }
 
   const res = await fetch(asset('/api/upload/'), {

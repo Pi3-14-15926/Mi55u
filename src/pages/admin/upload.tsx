@@ -20,6 +20,7 @@ export default function AdminUpload() {
   const router = useRouter()
   const [files, setFiles] = useState<UploadFile[]>([])
   const [uploading, setUploading] = useState(false)
+  const [uploadProgress, setUploadProgress] = useState({ current: 0, total: 0 })
   const [defaultDate, setDefaultDate] = useState('')
 
   useEffect(() => {
@@ -68,11 +69,14 @@ export default function AdminUpload() {
 
       const uploaded: Photo[] = []
       let nextId = photos.length > 0 ? Math.max(...photos.map((p) => p.id)) + 1 : 1
+      const pending = files.filter((f) => f.progress === 'pending')
+      setUploadProgress({ current: 0, total: pending.length })
 
       for (let i = 0; i < files.length; i++) {
         const f = files[i]
         if (f.progress !== 'pending') continue
 
+        setUploadProgress((p) => ({ ...p, current: p.current + 1 }))
         updateFile(i, { progress: 'uploading' })
 
         try {
@@ -101,6 +105,7 @@ export default function AdminUpload() {
       }
     } finally {
       setUploading(false)
+      setUploadProgress({ current: 0, total: 0 })
     }
   }, [files])
 
@@ -146,8 +151,27 @@ export default function AdminUpload() {
                   </motion.div>
                 ))}
               </div>
+              {uploading && (
+                <div className="mt-4">
+                  <div className="flex items-center justify-between text-xs mb-1" style={{ color: '#959595' }}>
+                    <span>上传中 {uploadProgress.current}/{uploadProgress.total}</span>
+                    <span>{Math.round((uploadProgress.current / uploadProgress.total) * 100)}%</span>
+                  </div>
+                  <div className="w-full h-2 rounded-full" style={{ background: '#f0f0f0' }}>
+                    <div
+                      className="h-full rounded-full transition-all duration-300"
+                      style={{
+                        width: `${(uploadProgress.current / uploadProgress.total) * 100}%`,
+                        background: 'linear-gradient(90deg, #2098ff, #85c1ff)',
+                      }}
+                    />
+                  </div>
+                </div>
+              )}
               <button onClick={handleUploadAll} disabled={uploading || files.every((f) => f.progress === 'done')} className="btn w-full mt-4 disabled:opacity-50">
-                {uploading ? '处理中...' : `添加到相册 (${files.filter((f) => f.progress === 'pending').length} 个)`}
+                {uploading
+                  ? `上传中 ${uploadProgress.current}/${uploadProgress.total}`
+                  : `添加到相册 (${files.filter((f) => f.progress === 'pending').length} 个)`}
               </button>
             </motion.div>
           )}
