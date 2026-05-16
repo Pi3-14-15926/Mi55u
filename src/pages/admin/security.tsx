@@ -10,7 +10,7 @@ import type { Config } from '@/lib/data'
 
 export default function AdminSecurity() {
   const router = useRouter()
-  const [cdnUrl, setCdnUrl] = useState('https://cdn.jsdelivr.net/gh/Pi3-14-15926/Mi55u@main/')
+  const [cdnUrl, setCdnUrl] = useState('https://cdn.jsdelivr.net/gh/')
   const [cdnEnabled, setCdnEnabled] = useState(true)
 
   useEffect(() => {
@@ -66,7 +66,7 @@ export default function AdminSecurity() {
           <h2 className="text-lg font-bold" style={{ fontFamily: "'Noto Serif SC', serif", color: '#333' }}>🚀 图片 CDN 加速</h2>
           <p className="text-xs" style={{ color: '#959595' }}>
             配置 CDN 地址替换 <code className="px-1 rounded" style={{ background: '#f5f5f5', color: '#d63384' }}>raw.githubusercontent.com</code>，加速中国大陆图片加载。
-            jsDelivr 格式：<code className="px-1 rounded" style={{ background: '#f5f5f5', color: '#d63384' }}>https://cdn.jsdelivr.net/gh/user/repo@main/</code>
+            支持 jsDelivr、Cloudflare Workers 等自定义 CDN 代理。
           </p>
           <div>
             <label className="text-xs mb-1 block" style={{ color: '#959595' }}>CDN 地址</label>
@@ -75,7 +75,7 @@ export default function AdminSecurity() {
                 type="url"
                 value={cdnUrl}
                 onChange={(e) => setCdnUrl(e.target.value)}
-                placeholder="https://cdn.jsdelivr.net/gh/user/repo@main/"
+                placeholder="https://cdn.jsdelivr.net/gh/"
                 className="input-field flex-1"
               />
               <button
