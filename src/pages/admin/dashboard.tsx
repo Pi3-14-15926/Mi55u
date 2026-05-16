@@ -6,6 +6,7 @@ import toast from 'react-hot-toast'
 import AdminLayout from '@/components/admin/AdminLayout'
 import { isLoggedIn, logout } from '@/lib/auth'
 import { fetchData } from '@/lib/data'
+import { defaultConfig } from '@/lib/defaultConfig'
 import { asset } from '@/lib/paths'
 import type { Config, Photo, DiaryEntry, TodoItem } from '@/lib/data'
 
@@ -34,12 +35,14 @@ export default function AdminDashboard() {
     logout(); toast.success('已退出'); router.push('/admin')
   }
 
+  const cfg = config || defaultConfig
+
   return (
     <AdminLayout>
       <div className="page-section">
           <div className="flex items-center justify-between mb-8">
           <div>
-            {config && <p className="text-2xl font-bold" style={{ color: '#333', fontFamily: "'Noto Serif SC', serif" }}>{config.siteTitle || `${config.maleName} & ${config.femaleName} 的小站`}</p>}
+            <p className="text-2xl font-bold" style={{ color: '#333', fontFamily: "'Noto Serif SC', serif" }}>{cfg.siteTitle || `${cfg.maleName} & ${cfg.femaleName} 的小站`}</p>
           </div>
           <button onClick={handleLogout} className="btn-outline text-sm">退出</button>
         </div>
@@ -61,17 +64,17 @@ export default function AdminDashboard() {
 
         <div className="card">
           <div className="flex items-center gap-4 mb-3">
-            {config?.avatarUrlMale ? (
-              <img src={config.avatarUrlMale} alt="" className="w-12 h-12 rounded-full object-cover" style={{ border: '2px solid rgba(208,206,206,0.4)' }} />
+            {cfg.avatarUrlMale ? (
+              <img src={cfg.avatarUrlMale} alt="" className="w-12 h-12 rounded-full object-cover" style={{ border: '2px solid rgba(208,206,206,0.4)' }} />
             ) : (
               <div className="w-12 h-12 rounded-full bg-love-100 flex items-center justify-center text-xl">👨</div>
             )}
             <div className="flex-1">
-              <p className="font-bold" style={{ color: '#333' }}>{config?.maleName} & {config?.femaleName}</p>
-              <p className="text-xs" style={{ color: '#959595' }}>认识 {config?.meetDate} · 相恋 {config?.loveDate}</p>
+              <p className="font-bold" style={{ color: '#333' }}>{cfg.maleName} & {cfg.femaleName}</p>
+              <p className="text-xs" style={{ color: '#959595' }}>认识 {cfg.meetDate} · 相恋 {cfg.loveDate}</p>
             </div>
-            {config?.avatarUrlFemale ? (
-              <img src={config.avatarUrlFemale} alt="" className="w-12 h-12 rounded-full object-cover" style={{ border: '2px solid rgba(208,206,206,0.4)' }} />
+            {cfg.avatarUrlFemale ? (
+              <img src={cfg.avatarUrlFemale} alt="" className="w-12 h-12 rounded-full object-cover" style={{ border: '2px solid rgba(208,206,206,0.4)' }} />
             ) : (
               <div className="w-12 h-12 rounded-full bg-love-100 flex items-center justify-center text-xl">👩</div>
             )}
