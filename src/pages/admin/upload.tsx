@@ -20,10 +20,11 @@ export default function AdminUpload() {
   const router = useRouter()
   const [files, setFiles] = useState<UploadFile[]>([])
   const [uploading, setUploading] = useState(false)
-  const [defaultDate, setDefaultDate] = useState(new Date().toISOString().split('T')[0])
+  const [defaultDate, setDefaultDate] = useState('')
 
   useEffect(() => {
     if (!isLoggedIn()) { router.replace('/admin'); return }
+    setDefaultDate(new Date().toISOString().split('T')[0])
   }, [router])
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {

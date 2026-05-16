@@ -18,12 +18,13 @@ export default function AdminDiary() {
   const [title, setTitle] = useState('')
   const [deleteId, setDeleteId] = useState<number | null>(null)
   const [content, setContent] = useState('')
-  const [date, setDate] = useState(new Date().toISOString().split('T')[0])
+  const [date, setDate] = useState('')
   const [preview, setPreview] = useState(false)
   const [saving, setSaving] = useState(false)
 
   useEffect(() => {
     if (!isLoggedIn()) { router.replace('/admin'); return }
+    setDate(new Date().toISOString().split('T')[0])
     loadData<DiaryEntry[]>('diary.json').then((data) => setEntries(data || []))
   }, [router])
 
