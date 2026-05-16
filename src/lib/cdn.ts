@@ -12,3 +12,16 @@ export function toCdnUrl(url: string): string {
   } catch {}
   return url
 }
+
+export function preloadImages(urls: string[]) {
+  for (const url of urls) {
+    const cdnUrl = toCdnUrl(url)
+    if (cdnUrl) {
+      const link = document.createElement('link')
+      link.rel = 'preload'
+      link.as = 'image'
+      link.href = cdnUrl
+      document.head.appendChild(link)
+    }
+  }
+}

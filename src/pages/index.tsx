@@ -6,7 +6,7 @@ import WaveDivider from '@/components/WaveDivider'
 import { Config, Photo, getTimeSince, fetchData, formatDate } from '@/lib/data'
 import { defaultConfig } from '@/lib/defaultConfig'
 import { asset } from '@/lib/paths'
-import { toCdnUrl } from '@/lib/cdn'
+import { toCdnUrl, preloadImages } from '@/lib/cdn'
 
 export default function HomePage() {
   const [config, setConfig] = useState<Config | null>(null)
@@ -16,7 +16,11 @@ export default function HomePage() {
 
   useEffect(() => {
     fetchData<Config>('/data/config.json').then(setConfig)
-    fetchData<Photo[]>('/data/photos.json').then((data) => setPhotos(data || []))
+    fetchData<Photo[]>('/data/photos.json').then((data) => {
+      const list = data || []
+      setPhotos(list)
+      preloadImages(list.map((p) => p.url))
+    })
   }, [])
 
   useEffect(() => {

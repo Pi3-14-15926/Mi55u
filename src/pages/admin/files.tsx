@@ -7,7 +7,7 @@ import ConfirmModal from '@/components/admin/ConfirmModal'
 import { isLoggedIn } from '@/lib/auth'
 import { loadData, saveData, deleteUploadedFile } from '@/lib/storage'
 import type { Photo } from '@/lib/data'
-import { toCdnUrl } from '@/lib/cdn'
+import { toCdnUrl, preloadImages } from '@/lib/cdn'
 
 function groupByDate(photos: Photo[]): Record<string, Record<string, Record<string, Photo[]>>> {
   const groups: Record<string, Record<string, Record<string, Photo[]>>> = {}
@@ -33,7 +33,11 @@ export default function AdminFiles() {
 
   useEffect(() => {
     if (!isLoggedIn()) { router.replace('/admin'); return }
-    loadData<Photo[]>('photos.json').then((data) => setPhotos(data || []))
+    loadData<Photo[]>('photos.json').then((data) => {
+      const list = data || []
+      setPhotos(list)
+      preloadImages(list.map((p) => p.url))
+    })
   }, [router])
 
   const savePhotos = (updated: Photo[]) => {

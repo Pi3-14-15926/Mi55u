@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { asset } from '@/lib/paths'
 import MainLayout from '@/layouts/MainLayout'
 import { Photo, fetchData, formatDate } from '@/lib/data'
-import { toCdnUrl } from '@/lib/cdn'
+import { toCdnUrl, preloadImages } from '@/lib/cdn'
 
 export default function AlbumPage() {
   const [photos, setPhotos] = useState<Photo[]>([])
@@ -12,7 +12,9 @@ export default function AlbumPage() {
 
   useEffect(() => {
     fetchData<Photo[]>('/data/photos.json').then((data) => {
-      setPhotos(data || [])
+      const list = data || []
+      setPhotos(list)
+      preloadImages(list.map((p) => p.url))
       setLoading(false)
     })
   }, [])
