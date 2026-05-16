@@ -10,7 +10,7 @@ import type { Config } from '@/lib/data'
 
 export default function AdminSecurity() {
   const router = useRouter()
-  const [cdnUrl, setCdnUrl] = useState('')
+  const [cdnUrl, setCdnUrl] = useState('https://cdn.jsdelivr.net/gh/')
 
   useEffect(() => {
     if (!isLoggedIn()) { router.replace('/admin'); return }
@@ -18,7 +18,7 @@ export default function AdminSecurity() {
   }, [router])
 
   const loadCdnConfig = async () => {
-    const config = await fetchData<Config>('config.json')
+    const config = await fetchData<Config>('/data/config.json')
     if (config?.cdnUrl) setCdnUrl(config.cdnUrl)
   }
 
