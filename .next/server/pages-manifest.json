@@ -1,16 +1,10 @@
 {
   "/_app": "pages/_app.js",
-  "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/api/data/[...slug]": "pages/api/data/[...slug].js",
-  "/": "pages/index.js",
-  "/admin/files": "pages/admin/files.js",
-  "/admin": "pages/admin.js",
-  "/album": "pages/album.js",
+  "/_error": "pages/_error.js",
   "/admin/diary": "pages/admin/diary.js",
-  "/admin/dashboard": "pages/admin/dashboard.js",
-  "/admin/upload": "pages/admin/upload.js",
-  "/diary": "pages/diary.js",
-  "/todo": "pages/todo.js",
-  "/api/delete-file": "pages/api/delete-file.js"
+  "/admin/settings": "pages/admin/settings.js",
+  "/": "pages/index.js",
+  "/api/data/[...slug]": "pages/api/data/[...slug].js",
+  "/admin/backup": "pages/admin/backup.js"
 }

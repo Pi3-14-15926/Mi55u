@@ -27,45 +27,15 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/admin": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/admin.js"
-    ],
-    "/admin/dashboard": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/admin/dashboard.js"
-    ],
     "/admin/diary": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/admin/diary.js"
     ],
-    "/admin/files": [
+    "/admin/settings": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/admin/files.js"
-    ],
-    "/admin/upload": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/admin/upload.js"
-    ],
-    "/album": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/album.js"
-    ],
-    "/diary": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/diary.js"
-    ],
-    "/todo": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/todo.js"
+      "static/chunks/pages/admin/settings.js"
     ]
   },
   "ampFirstPages": []
