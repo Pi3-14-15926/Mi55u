@@ -4,6 +4,11 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      base_path:
+        description: '资源路径前缀（自定义域名留空）'
+        required: false
+        type: string
 
 permissions:
   contents: read
@@ -28,9 +33,20 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Determine base path
+        run: |
+          if [ -n "${{ inputs.base_path }}" ]; then
+            echo "BASE_PATH=${{ inputs.base_path }}" >> $GITHUB_ENV
+          elif [ -f CNAME ] || [ -f public/CNAME ]; then
+            echo "BASE_PATH=" >> $GITHUB_ENV
+          else
+            echo "BASE_PATH=/Mi55u" >> $GITHUB_ENV
+          fi
+
       - name: Build
         env:
           EXPORT: 'true'
+          BASE_PATH: ${{ env.BASE_PATH }}
         run: npm run build
 
       - uses: actions/configure-pages@v4
