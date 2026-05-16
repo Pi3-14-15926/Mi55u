@@ -22,6 +22,7 @@ const navGroups = [
     items: [
       { href: '/admin/info', label: '信息设置', icon: '📋' },
       { href: '/admin/settings', label: '网站设置', icon: '⚙️' },
+      { href: '/admin/github', label: 'GitHub 直写', icon: '🔑' },
       { href: '/admin/backup', label: '导入导出', icon: '💾' },
     ],
   },

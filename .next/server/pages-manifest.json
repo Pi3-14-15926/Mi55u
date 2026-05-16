@@ -1,8 +1,11 @@
 {
   "/_app": "pages/_app.js",
-  "/_document": "pages/_document.js",
   "/_error": "pages/_error.js",
-  "/admin/backup": "pages/admin/backup.js",
+  "/_document": "pages/_document.js",
+  "/admin/github": "pages/admin/github.js",
+  "/admin/upload": "pages/admin/upload.js",
   "/admin/settings": "pages/admin/settings.js",
-  "/admin/info": "pages/admin/info.js"
+  "/admin/info": "pages/admin/info.js",
+  "/admin/files": "pages/admin/files.js",
+  "/api/data/[...slug]": "pages/api/data/[...slug].js"
 }

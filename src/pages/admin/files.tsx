@@ -5,7 +5,7 @@ import toast from 'react-hot-toast'
 import AdminLayout from '@/components/admin/AdminLayout'
 import ConfirmModal from '@/components/admin/ConfirmModal'
 import { isLoggedIn } from '@/lib/auth'
-import { loadData, saveData } from '@/lib/storage'
+import { loadData, saveData, deleteUploadedFile } from '@/lib/storage'
 import type { Photo } from '@/lib/data'
 
 function groupByDate(photos: Photo[]): Record<string, Record<string, Record<string, Photo[]>>> {
@@ -40,19 +40,10 @@ export default function AdminFiles() {
     setPhotos(updated)
   }
 
-  const deleteFile = (url: string) => {
-    if (url.startsWith('/uploads/')) {
-      fetch('/api/delete-file', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url }),
-      }).catch(() => {})
-    }
-  }
-
   const confirmDelete = () => {
     if (deleteId === null) return
     const photo = photos.find((p) => p.id === deleteId)
-    if (photo) deleteFile(photo.url)
+    if (photo) deleteUploadedFile(photo.url)
     const updated = photos.filter((p) => p.id !== deleteId)
     savePhotos(updated)
     setDeleteId(null)
@@ -100,7 +91,7 @@ export default function AdminFiles() {
 
   const confirmBatchDelete = () => {
     const deleted = photos.filter((p) => selectedIds.has(p.id))
-    deleted.forEach((p) => deleteFile(p.url))
+    deleted.forEach((p) => deleteUploadedFile(p.url))
     const updated = photos.filter((p) => !selectedIds.has(p.id))
     savePhotos(updated)
     setSelectedIds(new Set())
