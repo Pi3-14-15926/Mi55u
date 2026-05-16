@@ -5,6 +5,7 @@ import MainLayout from '@/layouts/MainLayout'
 import WaveDivider from '@/components/WaveDivider'
 import { Config, Photo, getTimeSince, fetchData, formatDate } from '@/lib/data'
 import { defaultConfig } from '@/lib/defaultConfig'
+import { asset } from '@/lib/paths'
 
 export default function HomePage() {
   const [config, setConfig] = useState<Config | null>(null)
@@ -121,7 +122,7 @@ export default function HomePage() {
 
         <Link href="/album" className="card no-underline block page-section" style={{ animationDelay: '0.2s', padding: '1.2rem' }}>
           <div className="flex items-center gap-2 mb-4">
-            <img src="/icons/jinqi.svg" alt="" className="w-8 h-8 md:w-10 md:h-10" />
+            <img src={asset('/icons/jinqi.svg')} alt="" className="w-8 h-8 md:w-10 md:h-10" />
             <h3 className="text-xl font-bold" style={{ fontFamily: "'Noto Serif SC', serif", color: '#333' }}>时光记忆</h3>
           </div>
           {recentPhotos.length === 0 ? (
@@ -154,13 +155,13 @@ export default function HomePage() {
 
         <div className="grid md:grid-cols-2 gap-6 mt-6">
           <Link href="/diary" className="card no-underline block page-section" style={{ animationDelay: '0.4s' }}>
-            <img src="/icons/diandi.svg" alt="" className="w-10 h-10 md:w-12 md:h-12 mb-3" />
+            <img src={asset('/icons/diandi.svg')} alt="" className="w-10 h-10 md:w-12 md:h-12 mb-3" />
             <h3 className="text-xl font-bold" style={{ fontFamily: "'Noto Serif SC', serif", color: '#333' }}>点点滴滴</h3>
             <p className="text-love-400 text-sm mt-2">记录我们的日常</p>
           </Link>
 
           <Link href="/todo" className="card no-underline block page-section" style={{ animationDelay: '0.5s' }}>
-            <img src="/icons/qingdan.svg" alt="" className="w-10 h-10 md:w-12 md:h-12 mb-3" />
+            <img src={asset('/icons/qingdan.svg')} alt="" className="w-10 h-10 md:w-12 md:h-12 mb-3" />
             <h3 className="text-xl font-bold" style={{ fontFamily: "'Noto Serif SC', serif", color: '#333' }}>记录清单</h3>
             <p className="text-love-400 text-sm mt-2">一起完成的小目标</p>
           </Link>

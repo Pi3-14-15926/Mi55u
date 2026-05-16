@@ -10,6 +10,9 @@ const nextConfig = {
 if (process.env.EXPORT === 'true') {
   nextConfig.output = 'export'
   nextConfig.basePath = '/Mi55u'
+  nextConfig.env = {
+    NEXT_PUBLIC_BASE_PATH: '/Mi55u',
+  }
 }
 
 module.exports = nextConfig

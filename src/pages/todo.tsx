@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { asset } from '@/lib/paths'
 import MainLayout from '@/layouts/MainLayout'
 import { TodoItem, fetchData } from '@/lib/data'
 
@@ -32,7 +33,7 @@ export default function TodoPage() {
       <div className="max-w-3xl mx-auto px-4 pt-8 page-section">
         <div className="text-center mb-8">
           <h1 className="section-title mb-2">
-            <img src="/icons/qingdan.svg" alt="" className="inline-block w-8 h-8 md:w-10 md:h-10 align-middle" /> 记录清单
+            <img src={asset('/icons/qingdan.svg')} alt="" className="inline-block w-8 h-8 md:w-10 md:h-10 align-middle" /> 记录清单
           </h1>
           <p className="text-love-400" style={{ fontFamily: "'Noto Serif SC', serif" }}>一起完成的小目标</p>
         </div>

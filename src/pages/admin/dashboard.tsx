@@ -6,6 +6,7 @@ import toast from 'react-hot-toast'
 import AdminLayout from '@/components/admin/AdminLayout'
 import { isLoggedIn, logout } from '@/lib/auth'
 import { fetchData } from '@/lib/data'
+import { asset } from '@/lib/paths'
 import type { Config, Photo, DiaryEntry, TodoItem } from '@/lib/data'
 
 export default function AdminDashboard() {
@@ -45,10 +46,10 @@ export default function AdminDashboard() {
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
           {[
-            { label: '照片', value: stats.photos, icon: '/icons/jinqi.svg' },
-            { label: '日记', value: stats.diary, icon: '/icons/diandi.svg' },
-            { label: '清单', value: stats.todos, icon: '/icons/qingdan.svg' },
-            { label: '已完成', value: stats.done, icon: '/icons/qingdan.svg' },
+            { label: '照片', value: stats.photos, icon: asset('/icons/jinqi.svg') },
+            { label: '日记', value: stats.diary, icon: asset('/icons/diandi.svg') },
+            { label: '清单', value: stats.todos, icon: asset('/icons/qingdan.svg') },
+            { label: '已完成', value: stats.done, icon: asset('/icons/qingdan.svg') },
           ].map((stat, i) => (
             <motion.div key={stat.label} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }} className="card text-center" style={{ padding: '1.5rem' }}>
               <img src={stat.icon} alt="" className="w-10 h-10 mx-auto mb-1" />

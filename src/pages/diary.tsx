@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import { asset } from '@/lib/paths'
 import MainLayout from '@/layouts/MainLayout'
 import { DiaryEntry, fetchData, formatDate } from '@/lib/data'
 
@@ -33,7 +34,7 @@ export default function DiaryPage() {
       <div className="max-w-3xl mx-auto px-4 pt-8 page-section">
         <div className="text-center mb-10">
           <h1 className="section-title mb-2">
-            <img src="/icons/diandi.svg" alt="" className="inline-block w-8 h-8 md:w-10 md:h-10 align-middle" /> 点点滴滴
+            <img src={asset('/icons/diandi.svg')} alt="" className="inline-block w-8 h-8 md:w-10 md:h-10 align-middle" /> 点点滴滴
           </h1>
           <p className="text-love-400" style={{ fontFamily: "'Noto Serif SC', serif" }}>写下我们的日常</p>
         </div>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { asset } from '@/lib/paths'
 import MainLayout from '@/layouts/MainLayout'
 import { Photo, fetchData, formatDate } from '@/lib/data'
 
@@ -38,7 +39,7 @@ export default function AlbumPage() {
       <div className="max-w-5xl mx-auto px-4 pt-8 page-section">
         <div className="text-center mb-10">
           <h1 className="section-title mb-2">
-            <img src="/icons/jinqi.svg" alt="" className="inline-block w-8 h-8 md:w-10 md:h-10 align-middle" /> 时光记忆
+            <img src={asset('/icons/jinqi.svg')} alt="" className="inline-block w-8 h-8 md:w-10 md:h-10 align-middle" /> 时光记忆
           </h1>
           <p className="text-love-400" style={{ fontFamily: "'Noto Serif SC', serif" }}>我们的美好瞬间</p>
         </div>
