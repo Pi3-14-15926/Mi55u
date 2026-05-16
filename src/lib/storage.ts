@@ -1,3 +1,5 @@
+import { asset } from './paths'
+
 const PREFIX = 'love_'
 const API_BASE = '/api/data/'
 
@@ -42,7 +44,7 @@ export async function loadData<T>(filename: string): Promise<T | null> {
   const staticPath = STATIC_MAP[filename]
   if (staticPath) {
     try {
-      const res = await fetch(staticPath)
+      const res = await fetch(asset(staticPath))
       if (!res.ok) return null
       const data = await res.json() as T
       try { localStorage.setItem(PREFIX + filename, JSON.stringify(data)) } catch {}

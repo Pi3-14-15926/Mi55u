@@ -19,10 +19,11 @@ export default function HomePage() {
   }, [])
 
   useEffect(() => {
-    if (!config) return
+    const activeConfig = config || (defaultConfig as Config)
+    if (!activeConfig.meetDate) return
     const update = () => {
-      setMeetTime(getTimeSince(config.meetDate))
-      setLoveDays(getTimeSince(config.loveDate).days)
+      setMeetTime(getTimeSince(activeConfig.meetDate))
+      setLoveDays(getTimeSince(activeConfig.loveDate).days)
     }
     update()
     const interval = setInterval(update, 1000)

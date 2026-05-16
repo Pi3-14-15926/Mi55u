@@ -6,16 +6,22 @@ import AdminLayout from '@/components/admin/AdminLayout'
 import { isLoggedIn } from '@/lib/auth'
 import { saveData } from '@/lib/storage'
 import { fetchData } from '@/lib/data'
+import { defaultConfig } from '@/lib/defaultConfig'
 import type { Config } from '@/lib/data'
 
 export default function AdminSettings() {
   const router = useRouter()
   const [config, setConfig] = useState<Config | null>(null)
   const [form, setForm] = useState<Config>({
-    maleName: '', femaleName: '', meetDate: '', loveDate: '',
-    avatarUrlMale: '', avatarUrlFemale: '',
-    siteTitle: '', siteDescription: '', footerText: '',
-    showMeetCount: true, showLoveCount: true, homepageBg: '', siteIcon: '', copyrightText: '',
+    maleName: defaultConfig.maleName || '', femaleName: defaultConfig.femaleName || '',
+    meetDate: defaultConfig.meetDate || '', loveDate: defaultConfig.loveDate || '',
+    avatarUrlMale: defaultConfig.avatarUrlMale || '', avatarUrlFemale: defaultConfig.avatarUrlFemale || '',
+    siteTitle: defaultConfig.siteTitle || '', siteDescription: defaultConfig.siteDescription || '',
+    footerText: defaultConfig.footerText || '',
+    showMeetCount: defaultConfig.showMeetCount !== false,
+    showLoveCount: defaultConfig.showLoveCount !== false,
+    homepageBg: defaultConfig.homepageBg || '', siteIcon: defaultConfig.siteIcon || '',
+    copyrightText: defaultConfig.copyrightText || '',
   })
 
   useEffect(() => {

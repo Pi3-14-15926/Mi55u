@@ -6,6 +6,7 @@ import AdminLayout from '@/components/admin/AdminLayout'
 import { isLoggedIn } from '@/lib/auth'
 import { saveData } from '@/lib/storage'
 import { fetchData } from '@/lib/data'
+import { defaultConfig } from '@/lib/defaultConfig'
 import type { Config } from '@/lib/data'
 
 function Toggle({ checked, onChange }: { checked: boolean; onChange: (v: boolean) => void }) {
@@ -27,10 +28,14 @@ export default function AdminInfo() {
   const router = useRouter()
   const [config, setConfig] = useState<Config | null>(null)
   const [form, setForm] = useState<Config>({
-    maleName: '', femaleName: '', meetDate: '', loveDate: '',
-    avatarUrlMale: '', avatarUrlFemale: '',
-    siteTitle: '', siteName: '', siteDescription: '', footerText: '',
-    showMeetCount: true, showLoveCount: true, homepageBg: '',
+    maleName: defaultConfig.maleName || '', femaleName: defaultConfig.femaleName || '',
+    meetDate: defaultConfig.meetDate || '', loveDate: defaultConfig.loveDate || '',
+    avatarUrlMale: defaultConfig.avatarUrlMale || '', avatarUrlFemale: defaultConfig.avatarUrlFemale || '',
+    siteTitle: defaultConfig.siteTitle || '', siteName: defaultConfig.siteName || '',
+    siteDescription: defaultConfig.siteDescription || '', footerText: defaultConfig.footerText || '',
+    showMeetCount: defaultConfig.showMeetCount !== false,
+    showLoveCount: defaultConfig.showLoveCount !== false,
+    homepageBg: defaultConfig.homepageBg || '',
   })
 
   useEffect(() => {
