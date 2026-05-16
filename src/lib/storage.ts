@@ -69,11 +69,22 @@ export function saveData<T>(filename: string, data: T): void {
   }).catch(() => {})
 }
 
-export function uploadFile(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
+export async function uploadFile(file: File): Promise<string> {
+  const dataUrl = await new Promise<string>((resolve, reject) => {
     const reader = new FileReader()
     reader.onload = () => resolve(reader.result as string)
     reader.onerror = () => reject(reader.error)
     reader.readAsDataURL(file)
   })
+
+  const res = await fetch('/api/upload/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ filename: file.name, data: dataUrl }),
+    signal: AbortSignal.timeout(10000),
+  })
+  if (!res.ok) throw new Error('上传失败')
+  const result = await res.json()
+  if (!result.url) throw new Error('上传返回无效地址')
+  return result.url
 }

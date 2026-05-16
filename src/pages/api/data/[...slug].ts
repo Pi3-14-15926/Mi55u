@@ -2,6 +2,12 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import fs from 'fs'
 import path from 'path'
 
+export const config = {
+  api: {
+    bodyParser: { sizeLimit: '50mb' },
+  },
+}
+
 const DATA_DIR = path.join(process.cwd(), 'server-data')
 const PUBLIC_DIR = path.join(process.cwd(), 'public', 'data')
 

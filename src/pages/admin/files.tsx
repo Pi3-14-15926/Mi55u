@@ -40,8 +40,19 @@ export default function AdminFiles() {
     setPhotos(updated)
   }
 
+  const deleteFile = (url: string) => {
+    if (url.startsWith('/uploads/')) {
+      fetch('/api/delete-file', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url }),
+      }).catch(() => {})
+    }
+  }
+
   const confirmDelete = () => {
     if (deleteId === null) return
+    const photo = photos.find((p) => p.id === deleteId)
+    if (photo) deleteFile(photo.url)
     const updated = photos.filter((p) => p.id !== deleteId)
     savePhotos(updated)
     setDeleteId(null)
@@ -88,6 +99,8 @@ export default function AdminFiles() {
   }
 
   const confirmBatchDelete = () => {
+    const deleted = photos.filter((p) => selectedIds.has(p.id))
+    deleted.forEach((p) => deleteFile(p.url))
     const updated = photos.filter((p) => !selectedIds.has(p.id))
     savePhotos(updated)
     setSelectedIds(new Set())

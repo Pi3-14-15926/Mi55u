@@ -31,7 +31,7 @@ export default function AdminBackup() {
   const handleBakeConfig = async () => {
     setBaking(true)
     try {
-      const res = await fetch('/api/admin/bake-config', { method: 'POST' })
+      const res = await fetch('/api/admin/bake-config/', { method: 'POST' })
       const data = await res.json()
       if (data.success) {
         toast.success('默认配置已写入！请执行 npm run build 构建项目')

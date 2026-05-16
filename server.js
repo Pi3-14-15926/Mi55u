@@ -129,26 +129,48 @@ ${entries}
     return;
   }
 
-  // API: POST /api/upload — upload file (data URL)
+  // API: POST /api/upload — upload file (save to public/uploads/)
   if (method === 'POST' && url === '/api/upload') {
     try {
       const body = JSON.parse(await readBody(req));
       const { filename, data } = body;
       if (!filename || !data) return json({ error: 'missing filename or data' }, 400);
-      const filePath = path.join(DATA_DIR, 'uploads', filename);
-      const dir = path.dirname(filePath);
-      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-      // data is base64 data URL, store as-is
-      fs.writeFileSync(filePath, data, 'utf8');
-      json({ success: true, url: data });
+      const ext = path.extname(filename);
+      const base = path.basename(filename, ext).replace(/[^a-zA-Z0-9\u4e00-\u9fff_-]/g, '_');
+      const safeName = Date.now() + '-' + base + ext;
+      const uploadDir = path.join(ROOT, 'public', 'uploads');
+      if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+      const match = data.match(/^data:([^;]+);base64,(.+)$/);
+      if (!match) return json({ error: 'invalid data URL' }, 400);
+      const buffer = Buffer.from(match[2], 'base64');
+      fs.writeFileSync(path.join(uploadDir, safeName), buffer);
+      json({ success: true, url: '/uploads/' + safeName });
     } catch (e) { json({ error: e.message }, 500); }
     return;
   }
 
-  // Static files from out/
+  // API: POST /api/delete-file — 删除上传的文件
+  if (method === 'POST' && url === '/api/delete-file') {
+    try {
+      const body = JSON.parse(await readBody(req));
+      const { url: fileUrl } = body;
+      if (!fileUrl || !fileUrl.startsWith('/uploads/')) return json({ error: 'invalid url' }, 400);
+      const filename = path.basename(fileUrl);
+      const filePath = path.join(ROOT, 'public', 'uploads', filename);
+      if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+      json({ success: true });
+    } catch (e) { json({ error: e.message }, 500); }
+    return;
+  }
+
+  // Static files: try out/ first, then public/
   let filePath = path.join(OUT_DIR, decodeURIComponent(url.split('?')[0]));
   if (filePath.endsWith(path.sep) || filePath.endsWith('/')) filePath = path.join(filePath, 'index.html');
   if (!path.extname(filePath)) filePath += '.html';
+
+  if (!fs.existsSync(filePath)) {
+    filePath = path.join(ROOT, 'public', decodeURIComponent(url.split('?')[0]));
+  }
 
   const ext = path.extname(filePath);
   if (fs.existsSync(filePath)) {
