@@ -1,4 +1,7 @@
 const AUTH_KEY = 'love_admin_auth'
+const PWD_KEY = 'love_admin_password'
+const DEFAULT_PASSWORD = 'love2026'
+const SESSION_DURATION = 7 * 24 * 60 * 60 * 1000
 
 interface AuthState {
   loggedIn: boolean
@@ -6,11 +9,13 @@ interface AuthState {
   timestamp: number
 }
 
-const DEFAULT_PASSWORD = 'love2024'
-const SESSION_DURATION = 7 * 24 * 60 * 60 * 1000
+function getPassword(): string {
+  if (typeof window === 'undefined') return DEFAULT_PASSWORD
+  return localStorage.getItem(PWD_KEY) || DEFAULT_PASSWORD
+}
 
 export function login(password: string): boolean {
-  if (password !== DEFAULT_PASSWORD) return false
+  if (password !== getPassword()) return false
 
   const state: AuthState = {
     loggedIn: true,
@@ -45,7 +50,8 @@ export function isLoggedIn(): boolean {
 }
 
 export function changePassword(oldPassword: string, newPassword: string): boolean {
-  if (oldPassword !== DEFAULT_PASSWORD) return false
-  localStorage.setItem('love_admin_password', newPassword)
+  if (oldPassword !== getPassword()) return false
+  if (newPassword.length < 4) return false
+  localStorage.setItem(PWD_KEY, newPassword)
   return true
 }
