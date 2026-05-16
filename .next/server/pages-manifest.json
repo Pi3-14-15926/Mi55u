@@ -1,1 +1,16 @@
-{"/_app":"pages/_app.js","/_document":"pages/_document.js","/_error":"pages/_error.js","/admin/upload":"pages/admin/upload.html","/admin/diary":"pages/admin/diary.html","/admin/todos":"pages/admin/todos.html","/":"pages/index.html","/admin/backup":"pages/admin/backup.html","/admin/dashboard":"pages/admin/dashboard.html","/admin":"pages/admin.html","/admin/files":"pages/admin/files.html","/admin/info":"pages/admin/info.html","/album":"pages/album.html","/diary":"pages/diary.html","/todo":"pages/todo.html","/admin/settings":"pages/admin/settings.html","/404":"pages/404.html"}
+{
+  "/_app": "pages/_app.js",
+  "/_error": "pages/_error.js",
+  "/_document": "pages/_document.js",
+  "/": "pages/index.js",
+  "/admin/dashboard": "pages/admin/dashboard.js",
+  "/admin/upload": "pages/admin/upload.js",
+  "/admin/files": "pages/admin/files.js",
+  "/admin": "pages/admin.js",
+  "/api/data/[...slug]": "pages/api/data/[...slug].js",
+  "/admin/diary": "pages/admin/diary.js",
+  "/admin/settings": "pages/admin/settings.js",
+  "/admin/info": "pages/admin/info.js",
+  "/admin/todos": "pages/admin/todos.js",
+  "/admin/backup": "pages/admin/backup.js"
+}

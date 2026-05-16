@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { fetchData } from '@/lib/data'
+import { defaultConfig } from '@/lib/defaultConfig'
 import type { Config } from '@/lib/data'
 
 export default function Footer() {
@@ -9,8 +10,8 @@ export default function Footer() {
     fetchData<Config>('/data/config.json').then(setConfig)
   }, [])
 
-  const copyrightText = config?.copyrightText || '💖 Made with Love 💖'
-  const footerText = config?.footerText || 'LoveSpace - 记录我们的故事'
+  const copyrightText = config?.copyrightText || defaultConfig.copyrightText || '💖 Made with Love 💖'
+  const footerText = config?.footerText || defaultConfig.footerText || 'LoveSpace - 记录我们的故事'
 
   return (
     <footer className="text-center py-12 px-4" style={{ fontFamily: "'Noto Serif SC', serif" }}>

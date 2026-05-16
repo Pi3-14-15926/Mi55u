@@ -5,8 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "node server.js",
-    "start:dev": "next dev",
+    "build:ghpages": "set EXPORT=true&&next build",
+    "start": "next start",
+    "start:server": "node server.js",
     "lint": "next lint",
     "typecheck": "tsc --noEmit"
   },

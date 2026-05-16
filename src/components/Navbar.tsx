@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { motion, AnimatePresence } from 'framer-motion'
 import { fetchData } from '@/lib/data'
+import { defaultConfig } from '@/lib/defaultConfig'
 import type { Config } from '@/lib/data'
 
 const navItems = [
@@ -21,7 +22,7 @@ export default function Navbar() {
     fetchData<Config>('/data/config.json').then(setConfig)
   }, [])
 
-  const siteTitle = config?.siteTitle || 'LoveSpace'
+  const siteTitle = config?.siteTitle || defaultConfig.siteTitle || 'LoveSpace'
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 px-4" style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}>

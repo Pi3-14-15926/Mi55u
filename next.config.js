@@ -1,10 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
   images: {
     unoptimized: true,
   },
   trailingSlash: true,
+}
+
+// GitHub Pages 静态导出模式 (EXPORT=true npm run build)
+if (process.env.EXPORT === 'true') {
+  nextConfig.output = 'export'
 }
 
 module.exports = nextConfig

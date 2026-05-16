@@ -22,10 +22,27 @@ export default function AdminBackup() {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [exporting, setExporting] = useState(false)
   const [importing, setImporting] = useState(false)
+  const [baking, setBaking] = useState(false)
 
   useEffect(() => {
     if (!isLoggedIn()) { router.replace('/admin'); return }
   }, [router])
+
+  const handleBakeConfig = async () => {
+    setBaking(true)
+    try {
+      const res = await fetch('/api/admin/bake-config', { method: 'POST' })
+      const data = await res.json()
+      if (data.success) {
+        toast.success('默认配置已写入！请执行 npm run build 构建项目')
+      } else {
+        toast.error(data.error || '写入失败')
+      }
+    } catch {
+      toast.error('请求失败，请确保开发服务器已启动')
+    }
+    setBaking(false)
+  }
 
   const handleExport = async () => {
     setExporting(true)
@@ -100,7 +117,7 @@ export default function AdminBackup() {
           <p className="text-sm mt-1" style={{ color: '#959595' }}>备份和恢复所有数据</p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-4">
+        <div className="grid md:grid-cols-3 gap-4">
           <div className="card text-center" style={{ padding: '2rem' }}>
             <div className="text-4xl mb-3">📤</div>
             <h3 className="font-bold mb-2" style={{ fontFamily: "'Noto Serif SC', serif", color: '#333' }}>导出数据</h3>
@@ -118,6 +135,15 @@ export default function AdminBackup() {
               {importing ? '导入中...' : '选择文件导入'}
             </button>
             <input ref={fileInputRef} type="file" accept=".json" onChange={handleFileChange} className="hidden" />
+          </div>
+
+          <div className="card text-center" style={{ padding: '2rem' }}>
+            <div className="text-4xl mb-3">🧱</div>
+            <h3 className="font-bold mb-2" style={{ fontFamily: "'Noto Serif SC', serif", color: '#333' }}>写入默认配置</h3>
+            <p className="text-sm mb-4" style={{ color: '#959595' }}>将系统设置写入前端源码，构建后所有设备样式一致</p>
+            <button onClick={handleBakeConfig} disabled={baking} className="btn text-sm disabled:opacity-50" style={{ background: '#f16b4f' }}>
+              {baking ? '写入中...' : '写入默认配置'}
+            </button>
           </div>
         </div>
 
