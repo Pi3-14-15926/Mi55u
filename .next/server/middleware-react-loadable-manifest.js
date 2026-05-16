@@ -1,1 +1,0 @@
-self.__REACT_LOADABLE_MANIFEST="{\"pages\\\\admin\\\\github.tsx -> @/lib/github\":{\"id\":\"pages\\\\admin\\\\github.tsx -> @/lib/github\",\"files\":[]}}"
