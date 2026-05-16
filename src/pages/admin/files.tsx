@@ -124,17 +124,17 @@ export default function AdminFiles() {
           <>
           <div className="card mb-4 flex items-center justify-between gap-2" style={{ padding: '0.6rem 1rem' }}>
             <div className="flex items-center gap-2">
-              <button onClick={selectAll} className="text-xs px-2 py-1 rounded tag hover:bg-love-100 transition-colors">全选</button>
-              <button onClick={deselectAll} className="text-xs px-2 py-1 rounded tag hover:bg-love-100 transition-colors">取消选择</button>
+              <button onClick={selectAll} className="text-sm px-3 py-1.5 rounded tag hover:bg-love-100 transition-colors">全选</button>
+              <button onClick={deselectAll} className="text-sm px-3 py-1.5 rounded tag hover:bg-love-100 transition-colors">取消选择</button>
             </div>
             <div className="flex items-center gap-3">
               {selectedIds.size > 0 && (
-                <span className="text-xs" style={{ color: '#959595' }}>已选 {selectedIds.size} 个</span>
+                <span className="text-sm" style={{ color: '#959595' }}>已选 {selectedIds.size} 个</span>
               )}
               <button
                 onClick={() => setBatchDelete(true)}
                 disabled={selectedIds.size === 0}
-                className="text-xs px-3 py-1.5 rounded disabled:opacity-40"
+                className="text-sm px-4 py-1.5 rounded disabled:opacity-40"
                 style={{ background: selectedIds.size > 0 ? '#fff0f0' : '#f5f5f5', color: selectedIds.size > 0 ? '#fa5c7c' : '#ccc' }}
               >
                 批量删除
