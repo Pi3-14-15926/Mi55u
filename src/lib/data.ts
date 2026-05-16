@@ -88,17 +88,7 @@ export async function fetchData<T>(path: string): Promise<T | null> {
     }
   } catch {}
 
-  // Fallback: localStorage
-  const cached = localStorage.getItem('love_' + filename)
-  if (cached) {
-    try {
-      return JSON.parse(cached) as T
-    } catch {
-      localStorage.removeItem('love_' + filename)
-    }
-  }
-
-  // Fallback: public GitHub raw URL
+  // Fallback: public GitHub raw URL（绕过 CDN 缓存，对所有访客生效）
   if (GITHUB_REPO) {
     try {
       const [owner, repoName] = GITHUB_REPO.split('/')
@@ -112,14 +102,24 @@ export async function fetchData<T>(path: string): Promise<T | null> {
     } catch {}
   }
 
-  // Fallback: static file
+  // Fallback: static file（带缓存破坏）
   try {
     const res = await fetch(asset(path) + _cb())
     if (!res.ok) return null
     const data = await res.json() as T
     try { localStorage.setItem('love_' + filename, JSON.stringify(data)) } catch {}
     return data
-  } catch {
-    return null
+  } catch {}
+
+  // Fallback: localStorage（最后手段，避免旧缓存挡住网络请求）
+  const cached = localStorage.getItem('love_' + filename)
+  if (cached) {
+    try {
+      return JSON.parse(cached) as T
+    } catch {
+      localStorage.removeItem('love_' + filename)
+    }
   }
+
+  return null
 }

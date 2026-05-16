@@ -60,17 +60,7 @@ export async function loadData<T>(filename: string): Promise<T | null> {
     } catch {}
   }
 
-  // 4. Fallback: localStorage
-  const cached = localStorage.getItem(PREFIX + filename)
-  if (cached) {
-    try {
-      return JSON.parse(cached) as T
-    } catch {
-      localStorage.removeItem(PREFIX + filename)
-    }
-  }
-
-  // 5. Fallback: static JSON files
+  // 4. Fallback: static JSON files（带缓存破坏）
   const staticPath = STATIC_MAP[filename]
   if (staticPath) {
     try {
@@ -79,8 +69,16 @@ export async function loadData<T>(filename: string): Promise<T | null> {
       const data = await res.json() as T
       try { localStorage.setItem(PREFIX + filename, JSON.stringify(data)) } catch {}
       return data
+    } catch {}
+  }
+
+  // 5. Fallback: localStorage（最后手段，避免旧缓存挡住网络请求）
+  const cached = localStorage.getItem(PREFIX + filename)
+  if (cached) {
+    try {
+      return JSON.parse(cached) as T
     } catch {
-      return null
+      localStorage.removeItem(PREFIX + filename)
     }
   }
 
